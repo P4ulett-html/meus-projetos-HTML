@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Clique no Quadrado</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000000;
+            position: relative;
+        }
+        #gameArea {
+            width: 500px;
+            height: 500px;
+            border: 2px solid #333;
+            position: relative;
+            background-color: #a19e9e;
+        }
+        .square {
+            width: 50px;
+            height: 50px;
+            background-color: #ff0000;
+            position: absolute;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameArea"></div>
+    <p id="score" style="position: absolute; top: 20px; right: 20px; font-size: 20px;">Pontuação: 0</p>
+
+    <script>
+        let score = 0;
+        const gameArea = document.getElementById('gameArea');
+        const scoreDisplay = document.getElementById('score');
+
+        function createSquare() {
+            const square = document.createElement('div');
+            square.classList.add('square');
+            square.style.top = Math.random() * (gameArea.clientHeight - 50) + 'px';
+            square.style.left = Math.random() * (gameArea.clientWidth - 50) + 'px';
+
+            gameArea.appendChild(square);
+
+            square.addEventListener('click', () => {
+                score++;
+                scoreDisplay.textContent = 'Pontuação: ' + score;
+                gameArea.removeChild(square);
+                setTimeout(createSquare, 500); // Reaparece após 500ms
+            });
+
+            setTimeout(() => {
+                if (gameArea.contains(square)) {
+                    gameArea.removeChild(square);
+                    alert('Game Over! Sua pontuação: ' + score);
+                    score = 0;
+                    scoreDisplay.textContent = 'Pontuação: 0';
+                }
+            }, 2000); // Tempo para clicar (2 segundos)
+        }
+
+        createSquare();
+    </script>
+</body>
+</html>
